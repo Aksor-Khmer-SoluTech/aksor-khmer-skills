@@ -59,12 +59,14 @@ made, since migrations only go forward.
 
 ## Things that protect data
 
-- **Never** add `-v` to a `docker compose … down` unless you mean to delete the database.
+- All data is in the `data/` folder — the database in `data/postgres`. Never delete it unless you mean to erase every
+  report and user. (An install that still has the database in the older `aksor-khmer-bi_pgdata` Docker volume is moved
+  into `data/postgres` automatically by the next `up`/`update`; the volume is kept until you remove it.)
 - `data/secrets` (the encryption key) and the database belong together — back up and restore both, or saved
   credentials can no longer be decrypted.
 - Don't run `init` again on an existing install, and don't edit the image tags in `docker-compose.yml` by hand —
   versions change through releases.
-- A Postgres volume keeps the password it was **created** with, whatever `.env` says later.
+- The database keeps the password it was **created** with, whatever `.env` says later.
 
 ## A real server
 
