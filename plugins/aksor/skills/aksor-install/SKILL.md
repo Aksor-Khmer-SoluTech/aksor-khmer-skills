@@ -27,7 +27,11 @@ cd aksor-khmer-bi
 ```
 
 Then open the portal (http://localhost:8080 by default) and sign in as `admin` with the password `init` printed
-(also saved in `.env`). API reference: http://localhost:8000/docs.
+(also saved in `.env`). It is a one-time password: the portal immediately asks you to choose your own, which turns
+the sign-in into a real administrator account (profile, two-factor, sessions) and retires the generated password.
+To change the admin's password later, use the portal (Settings → Access), not `.env`. If you're ever locked out, set
+a *different* `PORTAL_USERNAME` with a new password in `.env`, `./deployment.sh up`, sign in and reset the account.
+API reference: http://localhost:8000/docs.
 
 Run it as `./deployment.sh …`, never `. deployment.sh` — sourcing runs it inside your shell (the script refuses,
 but older copies would close the terminal on the first error).
@@ -38,9 +42,10 @@ but older copies would close the terminal on the first error).
 |---|---|
 | see what's running / logs | `./deployment.sh status` · `./deployment.sh logs` (or `logs api worker scheduler portal`) |
 | apply a `.env` change | `./deployment.sh up` (recreates only what changed) |
-| restart | `./deployment.sh restart` (or `restart app` / `db` / `redis`) |
+| restart | `./deployment.sh restart` (or `restart app` / `db` / `redis`, or single services: `restart api portal`). After editing `.env`, use `up` instead — a restart doesn't re-read it |
 | back up now | `./deployment.sh backup` → `./backups/` (database + templates, images, fonts, drivers and the encryption key; newest 14 kept, `BACKUP_KEEP` changes that) |
 | restore | `./deployment.sh restore backups/aksor-<time>.sql.gz` (asks you to type `restore`, takes a safety backup first, moves the current `data/` aside rather than deleting it), then `./deployment.sh up` |
+| free disk space after updates | `./deployment.sh cleanup` (removes old Aksor image versions only; lists them and asks first, `--dry-run` just lists) |
 | stop | `./deployment.sh down` — data is kept |
 | JDBC drivers (Oracle, SQL Server, Db2) | set `JDBC_WORKER_TOKEN` in `.env`, then `./deployment.sh app --profile jdbc up -d jdbc-worker api` |
 
@@ -77,8 +82,8 @@ made, since migrations only go forward.
 - **HTTPS is not included:** put a reverse proxy (Caddy, nginx, Traefik) in front of ports 8080 and 8000, have it
   send `X-Forwarded-Proto: https` and `X-Forwarded-For`. Don't expose plain HTTP to the internet — passwords and
   tokens would travel unencrypted.
-- **Passwords:** use long random values for `PORTAL_PASSWORD` and `POSTGRES_PASSWORD` (`openssl rand -hex 16`);
-  `up` refuses a guessable admin password.
+- **Passwords:** use long values for `PORTAL_PASSWORD` and `POSTGRES_PASSWORD` (`openssl rand -hex 16`, or your own —
+  any characters work; wrap a value containing `$` in single quotes in `.env`); `up` refuses a guessable admin password.
 - **Your own Postgres/Redis:** set `DATABASE_URL` and `REDIS_URL` in `.env` and skip those two stacks (the network
   is still needed).
 
@@ -86,7 +91,7 @@ made, since migrations only go forward.
 
 | Symptom | Cause and fix |
 |---|---|
-| `Postgres refuses POSTGRES_PASSWORD`, or the api log says `password authentication failed for user "aksor"` | The database was created with another password. Put the original back in `.env`, or set the database to the one in `.env`: `docker compose -p aksor-db -f docker-compose.db.yml exec -T postgres psql -U aksor -d aksor_khmer_bi -c "ALTER USER aksor PASSWORD '<the .env password>'"`, then `./deployment.sh up`. An empty `POSTGRES_PASSWORD` means `aksor`. |
+| `Postgres refuses POSTGRES_PASSWORD`, or the api log says `password authentication failed for user "aksor"` | The database was created with another password. Put the original back in `.env`, or give the database the one in `.env`: `./deployment.sh set-db-password` (any characters are safe). An empty `POSTGRES_PASSWORD` means `aksor`. |
 | `dependency failed to start: container aksor-app-api-1 is unhealthy` | Read why: `./deployment.sh logs api` — usually the database password (above) or `DATABASE_URL`. |
 | `no matching manifest for linux/…` | The machine's CPU is neither Intel/AMD nor ARM (`./deployment.sh doctor` shows it). |
 | `pull access denied` / `manifest unknown` | `docker-compose.yml` names a version that isn't released (edited by hand, or an unreleased commit): `git checkout docker-compose.yml` or a release tag, then `update`. |
