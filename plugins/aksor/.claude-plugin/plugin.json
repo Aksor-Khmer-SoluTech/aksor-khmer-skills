@@ -1,0 +1,11 @@
+{
+  "name": "aksor",
+  "version": "1.0.0",
+  "description": "Skills for Aksor Khmer BI: writing and using report templates (docx/xlsx/html, Khmer text, charts, data sources, API) and installing, upgrading and troubleshooting an Aksor server.",
+  "author": {
+    "name": "Aksor Khmer SoluTech"
+  },
+  "homepage": "https://github.com/Aksor-Khmer-SoluTech/aksor-khmer-bi",
+  "license": "MIT",
+  "keywords": ["aksor", "khmer", "reports", "templates", "docx", "pdf"]
+}

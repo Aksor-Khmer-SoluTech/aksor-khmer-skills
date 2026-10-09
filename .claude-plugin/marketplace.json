@@ -1,0 +1,16 @@
+{
+  "name": "aksor-khmer-skills",
+  "owner": {
+    "name": "Aksor Khmer SoluTech"
+  },
+  "metadata": {
+    "description": "Claude skills for Aksor Khmer BI users: report templates and server operation."
+  },
+  "plugins": [
+    {
+      "name": "aksor",
+      "source": "./plugins/aksor",
+      "description": "Write and use Aksor report templates, and install, upgrade and troubleshoot an Aksor server."
+    }
+  ]
+}
