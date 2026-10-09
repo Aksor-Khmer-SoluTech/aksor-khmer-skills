@@ -84,7 +84,7 @@ made, since migrations only go forward.
 
 | Symptom | Cause and fix |
 |---|---|
-| `Postgres refuses POSTGRES_PASSWORD`, or the api log says `password authentication failed for user "aksor"` | The database was created with another password. Put the original back in `.env`, or set the database to the one in `.env`: `docker compose -p aksor-db -f docker-compose.db.yml exec -T postgres psql -U aksor -c "ALTER USER aksor PASSWORD '<the .env password>'"`, then `./deployment.sh up`. An empty `POSTGRES_PASSWORD` means `aksor`. |
+| `Postgres refuses POSTGRES_PASSWORD`, or the api log says `password authentication failed for user "aksor"` | The database was created with another password. Put the original back in `.env`, or set the database to the one in `.env`: `docker compose -p aksor-db -f docker-compose.db.yml exec -T postgres psql -U aksor -d aksor_khmer_bi -c "ALTER USER aksor PASSWORD '<the .env password>'"`, then `./deployment.sh up`. An empty `POSTGRES_PASSWORD` means `aksor`. |
 | `dependency failed to start: container aksor-app-api-1 is unhealthy` | Read why: `./deployment.sh logs api` — usually the database password (above) or `DATABASE_URL`. |
 | `no matching manifest for linux/…` | The machine's CPU is neither Intel/AMD nor ARM (`./deployment.sh doctor` shows it). |
 | `pull access denied` / `manifest unknown` | `docker-compose.yml` names a version that isn't released (edited by hand, or an unreleased commit): `git checkout docker-compose.yml` or a release tag, then `update`. |
