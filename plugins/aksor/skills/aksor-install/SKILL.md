@@ -40,7 +40,8 @@ but older copies would close the terminal on the first error).
 
 | Want to | Command |
 |---|---|
-| see what's running / logs | `./deployment.sh status` · `./deployment.sh logs` (or `logs api worker scheduler portal`) |
+| see what's running / logs | `./deployment.sh status` · `./deployment.sh logs` (or `logs api worker scheduler portal jdbc-worker`); last lines: `./deployment.sh app logs --tail 100 api`; Postgres/Redis: `./deployment.sh db logs --tail 50`; older history in `data/logs/` |
+| the app only (Postgres/Redis untouched) | `./deployment.sh app up -d --wait [api portal …]`; with the JDBC worker: `./deployment.sh app --profile jdbc up -d --wait api jdbc-worker portal` |
 | apply a `.env` change | `./deployment.sh up` (recreates only what changed) |
 | restart | `./deployment.sh restart` (or `restart app` / `db` / `redis`, or single services: `restart api portal`). After editing `.env`, use `up` instead — a restart doesn't re-read it |
 | back up now | `./deployment.sh backup` → `./backups/` (database + templates, images, fonts, drivers and the encryption key; newest 14 kept, `BACKUP_KEEP` changes that) |

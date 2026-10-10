@@ -127,16 +127,17 @@ A repeating table over `MAX_ROWS_PER_FILE` rows (1,000 by default) is rendered a
 
 ## Khmer text and fonts
 
-- Segmentation is automatic for every string — nothing to do in the template or the data. Don't insert spaces or
+- Segmentation is automatic for every string that contains Khmer — nothing to do in the template or the data; dates,
+  numbers and IDs arrive untouched, so slicing a date works. Don't insert spaces or
   zero-width characters by hand.
 - A Khmer word split in the wrong place (usually a transliterated name, brand or loanword) → a **protected term**:
-  per organization in the portal (Admin → Protected terms, attached to the report) or per deployment; procedure in
+  per organization in the portal (Manage → Protected terms, attached to the report) or per deployment; procedure in
   [protected-terms-guide.md](https://github.com/Aksor-Khmer-SoluTech/aksor-khmer-bi/blob/main/docs/protected-terms-guide.md).
 - Set a Khmer font in the template (e.g. *Khmer OS Siemreap*, *Khmer OS Muol Light* for headings) and justify long
   Khmer paragraphs/cells. `KhmerOSSiemreap.ttf` has no Latin glyphs, so Latin text falls back to another font.
 - Templates name fonts; the server's installed fonts draw them. The Placeholders tab marks each named font
   Installed / Added / Substituted / Missing. A missing font is substituted silently and the layout moves — add it
-  under Admin → Resources → Fonts (whole server, no restart) after checking its Khmer coverage and license.
+  under Manage → Resources → Fonts (whole server, no restart) after checking its Khmer coverage and license.
 
 ## Filters and data sources
 

@@ -6,7 +6,7 @@ description: Write, fix and use report templates for Aksor Khmer BI — Word (.d
 # Aksor report templates
 
 Aksor fills a template with JSON and produces a document. Khmer is written without spaces, so most tools can't wrap
-it; Aksor word-segments every string automatically before rendering, so long Khmer text wraps and justifies
+it; Aksor word-segments every Khmer string automatically before rendering, so long Khmer text wraps and justifies
 correctly with nothing to do in the template.
 
 Answer with something the person can type: the exact placeholder or tag, where it goes (which paragraph, cell or
@@ -52,7 +52,7 @@ Charts and images work in `.docx` only.
 5. **Khmer needs a Khmer font, not spaces.** Never add spaces or invisible characters to make Khmer wrap. Set a Khmer
    font (e.g. *Khmer OS Siemreap*, *Khmer OS Muol Light* for headings) and justify long Khmer paragraphs and cells. A
    word split in the wrong place — usually a transliterated name, brand or loanword — is fixed by adding it as a
-   **protected term** (portal: Admin → Protected terms, attached to the report), not by changing the template.
+   **protected term** (portal: Manage → Protected terms, attached to the report), not by changing the template.
 
 ## A line-item table (docx), the right way
 
